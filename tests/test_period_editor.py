@@ -242,7 +242,7 @@ def test_period_editor_server_clear_removes_all_rows():
         server.set_inputs(**{"editor-clear": 1})
 
         assert server.get_output("row_count") == "0"
-        assert server.get_export("rows") == []
+        assert server.get_export("rows").value == []
 
 
 def test_period_editor_server_rejects_missing_dates_without_adding_row():
