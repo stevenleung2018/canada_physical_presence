@@ -200,7 +200,7 @@ def period_editor_server(
             rows_to_frame(rows(), labels, count_endpoints), selection_mode="rows", width="100%"
         )
 
-    @render.download_button(filename=filename, media_type="text/csv")
+    @render.download(filename=filename, media_type="text/csv")
     def download():
         frame = pd.DataFrame(
             [
