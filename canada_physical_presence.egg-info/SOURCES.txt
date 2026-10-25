@@ -1,0 +1,12 @@
+LICENSE
+README.md
+pyproject.toml
+canada_physical_presence.egg-info/PKG-INFO
+canada_physical_presence.egg-info/SOURCES.txt
+canada_physical_presence.egg-info/dependency_links.txt
+canada_physical_presence.egg-info/requires.txt
+canada_physical_presence.egg-info/top_level.txt
+physical_presence/__init__.py
+physical_presence/calculator.py
+physical_presence/period_editor.py
+tests/test_calculator.py

@@ -139,10 +139,18 @@ def period_editor_server(
     @reactive.effect
     @reactive.event(input.add)
     def _add():
-        start, end = input.range()
+        date_range = input.range()
+        if isinstance(date_range, dict):
+            start, end = date_range.get("start"), date_range.get("end")
+        else:
+            start, end = date_range
         if start is None or end is None:
             error_msg.set("Please choose both dates.")
             return
+        if isinstance(start, str):
+            start = date.fromisoformat(start)
+        if isinstance(end, str):
+            end = date.fromisoformat(end)
         if end < start:
             error_msg.set("The end date must be on or after the start date.")
             return
