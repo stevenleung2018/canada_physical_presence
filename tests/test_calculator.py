@@ -649,9 +649,7 @@ def test_exactly_1095_via_pr_plus_pre_pr_mix():
     data = ApplicantInput(
         application_date=APP,
         pr_date=APP - timedelta(days=1000),
-        pre_pr_periods=[
-            PrePRPeriod(Period(APP - timedelta(days=1190), APP - timedelta(days=1001)))
-        ],
+        pre_pr_periods=[PrePRPeriod(Period(APP - timedelta(days=1190), APP - timedelta(days=1001)))],
     )
     res = calculate(data)
     assert res.total == 1095

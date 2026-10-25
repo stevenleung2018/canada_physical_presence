@@ -80,10 +80,7 @@ def test_rows_to_frame_empty_result_has_expected_columns():
 
 
 def test_parse_csv_normalizes_headers_and_optional_fields():
-    content = (
-        b" START , END , CATEGORY , NOTE \n"
-        b"2025-01-01,2025-01-03,Travel,Family visit\n"
-    )
+    content = b" START , END , CATEGORY , NOTE \n2025-01-01,2025-01-03,Travel,Family visit\n"
 
     rows = parse_csv(content, default_category="Personal")
 
@@ -117,9 +114,7 @@ def test_parse_csv_preserves_explicit_empty_default_category():
 
 def test_parse_csv_parses_multiple_rows_in_input_order():
     rows = parse_csv(
-        b"start,end,category,note\n"
-        b"2025-02-01,2025-02-02,Work,second\n"
-        b"2025-01-01,2025-01-03,Travel,first\n",
+        b"start,end,category,note\n2025-02-01,2025-02-02,Work,second\n2025-01-01,2025-01-03,Travel,first\n",
         default_category="",
     )
 
@@ -203,8 +198,7 @@ def _period_editor_app(categories=None, initial_rows=()):
         rows.set(list(initial_rows))
         export_test_values(
             rows=lambda: [
-                (row.start.isoformat(), row.end.isoformat(), row.category, row.note)
-                for row in rows()
+                (row.start.isoformat(), row.end.isoformat(), row.category, row.note) for row in rows()
             ]
         )
 
@@ -253,9 +247,7 @@ def test_period_editor_server_clear_removes_all_rows():
 
 def test_period_editor_server_rejects_missing_dates_without_adding_row():
     with test_server(_period_editor_app()) as server:
-        server.set_inputs(
-            **{"editor-range": {"start": None, "end": None}, "editor-add": 1}
-        )
+        server.set_inputs(**{"editor-range": {"start": None, "end": None}, "editor-add": 1})
 
         assert server.get_output("row_count") == "0"
         assert "Please choose both dates." in str(server.get_output("editor-error"))
@@ -271,9 +263,7 @@ def test_period_editor_server_rejects_reversed_dates():
         )
 
         assert server.get_output("row_count") == "0"
-        assert "The end date must be on or after the start date." in str(
-            server.get_output("editor-error")
-        )
+        assert "The end date must be on or after the start date." in str(server.get_output("editor-error"))
 
 
 def test_period_editor_server_uses_default_category_without_selector():
@@ -286,9 +276,7 @@ def test_period_editor_server_uses_default_category_without_selector():
             }
         )
 
-        assert server.get_export("rows").value == [
-            ["2025-01-01", "2025-01-02", "Personal", ""]
-        ]
+        assert server.get_export("rows").value == [["2025-01-01", "2025-01-02", "Personal", ""]]
 
 
 def test_period_editor_server_accepts_pair_shaped_date_range():
@@ -301,17 +289,13 @@ def test_period_editor_server_accepts_pair_shaped_date_range():
             }
         )
 
-        assert server.get_export("rows").value == [
-            ["2025-01-01", "2025-01-02", "Personal", ""]
-        ]
+        assert server.get_export("rows").value == [["2025-01-01", "2025-01-02", "Personal", ""]]
 
 
 def test_period_editor_server_imports_csv_and_sorts_rows(tmp_path):
     initial = [PeriodRow(date(2025, 3, 1), date(2025, 3, 2), "Personal", "existing")]
     upload_path = tmp_path / "periods.csv"
-    upload_path.write_bytes(
-        b"start,end,category,note\n2025-01-01,2025-01-02,Work,imported\n"
-    )
+    upload_path.write_bytes(b"start,end,category,note\n2025-01-01,2025-01-02,Work,imported\n")
     with test_server(_period_editor_app(categories=["Personal"], initial_rows=initial)) as server:
         server.set_inputs(
             **{
