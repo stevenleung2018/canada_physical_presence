@@ -61,8 +61,12 @@ def parse_csv(content: bytes, default_category: str) -> list[PeriodRow]:
         raise ValueError(f"CSV is missing required column(s): {', '.join(sorted(missing))}.")
     rows = []
     for idx, rec in frame.iterrows():
-        start = pd.to_datetime(rec["start"]).date()
-        end = pd.to_datetime(rec["end"]).date()
+        start_value = pd.to_datetime(rec["start"])
+        end_value = pd.to_datetime(rec["end"])
+        if pd.isna(start_value) or pd.isna(end_value):
+            raise ValueError(f"Row {idx + 2}: both start and end dates are required.")
+        start = start_value.date()
+        end = end_value.date()
         if end < start:
             raise ValueError(f"Row {idx + 2}: end date is before start date.")
         rows.append(
