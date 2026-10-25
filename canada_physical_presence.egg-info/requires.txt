@@ -1,0 +1,6 @@
+shiny>=1.0
+pandas>=2.0
+
+[dev]
+pytest>=8
+ruff>=0.5
